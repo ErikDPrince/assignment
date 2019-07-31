@@ -14,8 +14,12 @@ class CreateTableProductImage extends Migration
     public function up()
     {
         Schema::create('product_image', function (Blueprint $table) {
-            
-
+            $table->increments('id');
+            $table->integer('product_id')->unsigned();
+            $table->foreign('product_id')->references('id')->on('product');
+            $table->string('image');
+            $table->integer('status');
+            $table->timestamps();
             
         });
     }
