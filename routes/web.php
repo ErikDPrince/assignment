@@ -12,5 +12,11 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('vendor/welcome');
 });
+Route::get('/', 'HomePageController@index')->name('homePage');
+Route::post('/', 'HomePageController@searchByNameProduct')->name('searchByNameProduct');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
