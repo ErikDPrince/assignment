@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Agency extends Model
 {
     //
-    protected $table = 'agency';
+    protected $table = 'agencies';
     protected $fillable = ['id','user_id','name','address'];
 
     public function user() {

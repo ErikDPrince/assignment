@@ -14,7 +14,7 @@ use DB;
 class Product extends Model
 {
     //
-    protected $table = 'product';
+    protected $table = 'products';
     protected $fillable = ['id','name','user_id','base_price'];
 
     public function productImage() 
@@ -37,8 +37,8 @@ class Product extends Model
     {
         $calculate_rate =
         // table product join agency_product va product khi product.id = agency_product.product_id
-        $this->join('agency_product','product.id','=','agency_product.product_id')
-        ->select('product_id',DB::raw('MAX(user_id) as user_id'),DB::raw('SUM(quantity) as sum_quantity'),DB::raw('MAX(agency_product.discount_rate) as discount_rate'))
+        $this->join('agency_products','products.id','=','agency_products.product_id')
+        ->select('product_id',DB::raw('MAX(user_id) as user_id'),DB::raw('SUM(quantity) as sum_quantity'),DB::raw('MAX(agency_products.discount_rate) as discount_rate'))
         ->groupBy('product_id');
         
         if ($stt = 0) 
@@ -152,12 +152,16 @@ class Product extends Model
     {
 
         //return an array
-        return $this->join('product_categories', 'product_categories.product_id', '=', 'products.id')->where('product_categories.product_id', $id)->select('category_id')->get()->toArray();
+        return $this->join('product_categories', 'product_categories.product_id', '=', 'products.id')
+                    ->where('product_categories.product_id', $id)
+                    ->select('category_id')->get()->toArray();
     }
 
     public function getDataSameCate($cate_id_arr)
     {
-        return $this->join('product_categories', 'product_categories.product_id', '=', 'products.id')->whereIn('product_categories.category_id', $cate_id_arr)->select('product_id')->get()->toArray();
+        return $this->join('product_categories', 'product_categories.product_id', '=', 'products.id')
+                    ->whereIn('product_categories.category_id', $cate_id_arr)
+                    ->select('product_id')->get()->toArray();
     }
 
     public function getAllDataInArrayProductId($product_id_arr)
@@ -175,7 +179,9 @@ class Product extends Model
 
     public function getUserId($product_id)
     {
-        return $this->select('user_id')->where('id', $product_id)->get();
+        return $this->select('user_id')
+                    ->where('id', $product_id)
+                    ->get();
     }
 
     

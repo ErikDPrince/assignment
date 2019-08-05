@@ -16,7 +16,7 @@ class CreateTableAgencyImage extends Migration
         Schema::create('agency_image', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('agency_id')->unsigned();;
-            $table->foreign('agency_id')->references('id')->on('agency');
+            $table->foreign('agency_id')->references('id')->on('agencies');
             $table->string('image');
             $table->timestamps();
         });

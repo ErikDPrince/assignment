@@ -13,7 +13,7 @@ class CreateTableAgency extends Migration
      */
     public function up()
     {
-        Schema::create('agency', function (Blueprint $table) {
+        Schema::create('agencies', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->string('name');
@@ -31,6 +31,6 @@ class CreateTableAgency extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('agency');
+        Schema::dropIfExists('agencies');
     }
 }

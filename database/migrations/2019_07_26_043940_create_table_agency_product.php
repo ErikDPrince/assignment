@@ -13,15 +13,15 @@ class CreateTableAgencyProduct extends Migration
      */
     public function up()
     {
-        Schema::create('agency_product', function (Blueprint $table) {
+        Schema::create('agency_products', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('agency_id')->unsigned();
             $table->integer('product_id')->unsigned();
             $table->integer('quantity');
             $table->float('discount_rate',8,2);
 
-            $table->foreign('agency_id')->references('id')->on('agency');
-            $table->foreign('product_id')->references('id')->on('product');    
+            $table->foreign('agency_id')->references('id')->on('agencies');
+            $table->foreign('product_id')->references('id')->on('products');    
             $table->timestamps();
         });
     }
@@ -33,6 +33,6 @@ class CreateTableAgencyProduct extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('agency_product');
+        Schema::dropIfExists('agency_products');
     }
 }

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class AgencyProduct extends Model
 {
     //
-    protected $table = 'agency_product';
+    protected $table = 'agency_products';
     protected $fillable = ['id','agency_id','agency_product','quantity','discount_rate'];
 
     public function product() {
