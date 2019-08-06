@@ -53,6 +53,26 @@ class ProductController extends Controller
         DB::beginTransaction();
         try {
 
+            $id = $this->getUserId();
+        	$product = new Product;
+            $product->addData($id, $request);
+
+        	$product_id = $product->id;
+            $file = $request->file('fImage');
+
+            $this->uploadFile($file, $product_id);
+
+            $cate = $request->cate;  //array
+            foreach ($cate as $key => $value) {
+    	        $product_cate = new ProductCategory;
+                $product_cate = $product_cate->addData($product_id, $value);
+            }
+
+            $agency = $request->agency; // array
+            foreach ($agency as $key => $value) {
+                $agency_product = new AgencyProduct;
+                $agency_product = $agency_product->addData($value, $product_id);
+            }
         DB::commit();
         return redirect()->route('seller.product');
         }
@@ -200,5 +220,96 @@ class ProductController extends Controller
             DB::rollback();
         }
     }
+
+
+    public function delImgProduct(Request $request)
+    {
+        if($request->ajax())
+        {
+            $id = $request->id;
+            $product_image = new ProductImage;
+            $product_image = $product_image->getDataById($id);
+            $image_path = public_path('/uploads/products/') . $product_image->image;
+            $product_image = $product_image->deleteData();
+            
+            if(File::exists($image_path)) {
+                File::delete($image_path);
+            }
+            return 1;
+        }
+        else {
+            return "not found";
+        }
+    }
+
+    public function setDefaultImg(Request $request)
+    {
+        if($request->ajax())
+        {
+            $id         = $request->id;
+            $product_id = $request->product_id;
+            $product_img = new ProductImage;
+            $product_img = $product_img->setDefaultImg($id, $product_id);
+            return 1;
+        }
+        else {
+            return "not found";
+        }
+    }
+
+    public function delAgencyProduct(Request $request)
+    {
+        if($request->ajax())
+        {
+            $id = $request->id;
+            $agency_product = new AgencyProduct;
+            $agency_product = $agency_product->deleteDataById($id);
+            return 1;
+        }
+        else{
+            return "not found";
+        } 
+    }
+
+    public function delProduct($id)
+    {
+        DB::beginTransaction();
+        try {
+            //delete product image
+            $product_image = new ProductImage;
+            $product_image = $product_image->getDataByProductId($id, false);
+            foreach ($product_image as $key => $value) {
+                $image_path = public_path('/uploads/products/') . $value->image;
+                $value->deleteData();
+                if(File::exists($image_path)) {
+                    File::delete($image_path);
+                }
+            }
+
+            //delete product cate
+           
+            $product_cate = new ProductCategory;
+            $product_cate = $product_cate->deleteDataByProductId($id);
+
+            //delete agency product;
+            $agency_product = new AgencyProduct;
+            $agency_product = $agency_product->deleteDataByAttrId($id);
+
+            // delete product
+            $product = new Product;
+            $product = $product->deleteDataById($id);
+
+            DB::commit();
+            return redirect()->back();
+        }
+        catch (Exception $e) {
+            DB::rollBack();
+        }
+    }
+
+
+
+
+    
 
 }

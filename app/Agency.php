@@ -15,7 +15,7 @@ class Agency extends Model
     }
 
      public function agencyImage() {
-         return $this->hasMany('App\AgencyImage');
+        return $this->hasMany('App\AgencyImage');
     }
 
     public function product() {

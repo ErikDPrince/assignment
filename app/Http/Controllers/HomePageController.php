@@ -27,7 +27,7 @@ class HomePageController extends Controller
         $topsales = new Product;
         $topsales = $this->getTopSale();
 
-        return view('homepage.home')->with([
+        return view('home')->with([
             'product' => $product,
             'topsales'=> $topsales
         ]);
@@ -111,7 +111,7 @@ class HomePageController extends Controller
         $topsales = $this ->getTopSale();
 
 
-        return view('homepage.view')->with([
+        return view('homepage.home')->with([
             'product'  =>  $product,
             'topsales' =>  $topsales
         ]);
