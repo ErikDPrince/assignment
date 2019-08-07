@@ -1,0 +1,14 @@
+.logo {
+    width: 35%;
+    margin: 0 auto;
+  }
+  
+  .slogant {
+    margin:10px auto;
+  }
+  
+  label.error {
+    display: inline-block;
+    color:red;
+    width: 200px;
+  }    
